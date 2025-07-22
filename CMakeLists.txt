@@ -1,0 +1,37 @@
+cmake_minimum_required(VERSION 3.20.0 FATAL_ERROR)
+
+set(DOCKING_IMGUI_NAME "DockingImGui")
+message("[${DOCKING_IMGUI_NAME}] CMake configuration begins...")
+
+project(
+    "Docking ImGui"
+    DESCRIPTION "A win32 + DX12 floating Dear ImGui window project using Dear ImGui's Docking branch."
+    LANGUAGES CXX
+)
+
+if(NOT MSVC)
+    message(FATAL_ERROR "This app currently only supports MSVC for building." )
+endif()
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+set(CMAKE_CONFIGURATION_TYPES Debug Release)
+set_property(DIRECTORY ${DOCKING_IMGUI_PROJECT_DIR} PROPERTY VS_STARTUP_PROJECT ${DOCKING_IMGUI_NAME})
+
+set(DOCKING_IMGUI_PROJECT_DIR ${CMAKE_SOURCE_DIR})
+set(DOCKING_IMGUI_SOURCE_DIR ${DOCKING_IMGUI_PROJECT_DIR}/source)
+set(DOCKING_IMGUI_INCLUDE_DIR ${DOCKING_IMGUI_PROJECT_DIR}/include ${DOCKING_IMGUI_SOURCE_DIR})
+set(DOCKING_IMGUI_LIBRARY_DIR ${DOCKING_IMGUI_PROJECT_DIR}/library)
+set(DOCKING_IMGUI_BINARY_DIR ${DOCKING_IMGUI_PROJECT_DIR}/binary)
+message("[${DOCKING_IMGUI_NAME}] PROJECT_DIR: ${DOCKING_IMGUI_PROJECT_DIR}")
+
+foreach(config IN ITEMS ${CMAKE_CONFIGURATION_TYPES})
+    string(TOUPPER ${config} CONFIG)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${CONFIG} ${DOCKING_IMGUI_BINARY_DIR}/${config}/bin)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_${CONFIG} ${DOCKING_IMGUI_BINARY_DIR}/${config}/dll)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${CONFIG} ${DOCKING_IMGUI_BINARY_DIR}/${config}/lib)
+endforeach()
+
+add_subdirectory("./source")
+add_subdirectory("./external")
