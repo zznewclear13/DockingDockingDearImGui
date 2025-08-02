@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.20.0 FATAL_ERROR)
 
 set(DOCKING_IMGUI_LIB_NAME "imgui")
-set(DOCKING_IMGUI_LIB_INCLUDE_DIR "imgui/include")
+set(DOCKING_IMGUI_LIB_INCLUDE_DIR "imgui/")
 
-file(GLOB_RECURSE SOURCE_FILES *.cpp* *.h* *.hpp*)
-# list(FILTER SOURCE_FILES EXCLUDE REGEX ${DOCKING_IMGUI_LIB_SOURCE_DIR}/ProtoGen/*)
+file(GLOB SOURCE_FILES "imgui/*.cpp"  "imgui/*.h" "imgui/*.hpp")
+list(APPEND SOURCE_FILES "imgui/backends/imgui_impl_dx12.cpp" "imgui/backends/imgui_impl_dx12.h")
+list(APPEND SOURCE_FILES "imgui/backends/imgui_impl_win32.cpp" "imgui/backends/imgui_impl_win32.h")
 
 message("\n[${DOCKING_IMGUI_LIB_NAME}] Begin building Visual Studio filters: ")
 foreach(SOURCE_FILE IN ITEMS ${SOURCE_FILES})
@@ -18,4 +19,4 @@ message("[${DOCKING_IMGUI_LIB_NAME}] End building Visual Studio filters.\n")
 
 add_library(${DOCKING_IMGUI_LIB_NAME} STATIC ${SOURCE_FILES})
 target_include_directories(${DOCKING_IMGUI_LIB_NAME} PUBLIC ${DOCKING_IMGUI_LIB_INCLUDE_DIR} ${DOCKING_IMGUI_LIB_INCLUDE_DIR})
-target_link_libraries(${DOCKING_IMGUI_NAME} PRIVATE ${DOCKING_IMGUI_LIB_NAME})
+target_link_libraries(${DOCKING_IMGUI_NAME} PRIVATE ${DOCKING_IMGUI_LIB_NAME} "d3d12.lib" "dxgi.lib" "dxguid.lib" "d3dcompiler.lib")

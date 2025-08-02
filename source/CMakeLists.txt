@@ -12,6 +12,6 @@ foreach(SOURCE_FILE IN ITEMS ${SOURCE_FILES})
 endforeach()
 message("[${DOCKING_IMGUI_NAME}] End building Visual Studio filters.\n")
 
-add_executable(${DOCKING_IMGUI_NAME} ${SOURCE_FILES})
+add_executable(${DOCKING_IMGUI_NAME} WIN32 ${SOURCE_FILES})
 target_include_directories(${DOCKING_IMGUI_NAME} PRIVATE ${DOCKING_IMGUI_INCLUDE_DIR})
 target_link_directories(${DOCKING_IMGUI_NAME} PRIVATE ${DOCKING_IMGUI_LIBRARY_DIR})
